@@ -1,0 +1,24 @@
+
+[2015-08-13 13:29:15] Traceback (most recent call last):
+
+  File "/Users/uv2sun/Workspaces/PyCharm/Python2-study/test2.py", line 891, in <module>
+    cefpython.DpiAware.SetProcessDpiAware()
+
+AttributeError: 'module' object has no attribute 'DpiAware'
+
+
+[2015-08-13 13:30:26] Traceback (most recent call last):
+
+  File "/Users/uv2sun/Workspaces/PyCharm/Python2-study/test2.py", line 891, in <module>
+    cefpython.DpiAware.SetProcessDpiAware()
+
+AttributeError: 'module' object has no attribute 'DpiAware'
+
+
+[2015-08-13 13:40:03] Traceback (most recent call last):
+
+  File "/Users/uv2sun/Workspaces/PyCharm/Python2-study/test2.py", line 891, in <module>
+    cefpython.DpiAware.SetProcessDpiAware()
+
+AttributeError: 'module' object has no attribute 'DpiAware'
+
