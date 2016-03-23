@@ -3,6 +3,7 @@
 from __future__ import print_function
 
 import os
+
 try:
     from urllib import urlencode, quote_plus
 except ImportError:
@@ -130,10 +131,13 @@ def showQRImage():
     f.close()
 
     if sys.platform.find('darwin') >= 0:
+        print("darwin os")
         subprocess.call(['open', QRImagePath])
     elif sys.platform.find('linux') >= 0:
+        print("linux os")
         subprocess.call(['xdg-open', QRImagePath])
     else:
+        print("other os")
         os.startfile(QRImagePath)
 
     print('请使用微信扫描二维码以登录')
@@ -231,10 +235,9 @@ def login():
 
 
 def webwxinit():
-
     url = base_uri + \
-        '/webwxinit?pass_ticket=%s&skey=%s&r=%s' % (
-            pass_ticket, skey, int(time.time()))
+          '/webwxinit?pass_ticket=%s&skey=%s&r=%s' % (
+              pass_ticket, skey, int(time.time()))
     params = {
         'BaseRequest': BaseRequest
     }
@@ -264,10 +267,9 @@ def webwxinit():
 
 
 def webwxgetcontact():
-
     url = base_uri + \
-        '/webwxgetcontact?pass_ticket=%s&skey=%s&r=%s' % (
-            pass_ticket, skey, int(time.time()))
+          '/webwxgetcontact?pass_ticket=%s&skey=%s&r=%s' % (
+              pass_ticket, skey, int(time.time()))
 
     request = getRequest(url=url)
     request.add_header('ContentType', 'application/json; charset=UTF-8')
@@ -286,8 +288,12 @@ def webwxgetcontact():
     MemberList = dic['MemberList']
 
     # 倒序遍历,不然删除的时候出问题..
-    SpecialUsers = ["newsapp", "fmessage", "filehelper", "weibo", "qqmail", "tmessage", "qmessage", "qqsync", "floatbottle", "lbsapp", "shakeapp", "medianote", "qqfriend", "readerapp", "blogapp", "facebookapp", "masssendapp",
-                    "meishiapp", "feedsapp", "voip", "blogappweixin", "weixin", "brandsessionholder", "weixinreminder", "wxid_novlwrv3lqwv11", "gh_22b87fa7cb3c", "officialaccounts", "notification_messages", "wxitil", "userexperience_alarm"]
+    SpecialUsers = ["newsapp", "fmessage", "filehelper", "weibo", "qqmail", "tmessage", "qmessage", "qqsync",
+                    "floatbottle", "lbsapp", "shakeapp", "medianote", "qqfriend", "readerapp", "blogapp", "facebookapp",
+                    "masssendapp",
+                    "meishiapp", "feedsapp", "voip", "blogappweixin", "weixin", "brandsessionholder", "weixinreminder",
+                    "wxid_novlwrv3lqwv11", "gh_22b87fa7cb3c", "officialaccounts", "notification_messages", "wxitil",
+                    "userexperience_alarm"]
     for i in range(len(MemberList) - 1, -1, -1):
         Member = MemberList[i]
         if Member['VerifyFlag'] & 8 != 0:  # 公众号/服务号
@@ -306,8 +312,8 @@ def createChatroom(UserNames):
     MemberList = [{'UserName': UserName} for UserName in UserNames]
 
     url = base_uri + \
-        '/webwxcreatechatroom?pass_ticket=%s&r=%s' % (
-            pass_ticket, int(time.time()))
+          '/webwxcreatechatroom?pass_ticket=%s&r=%s' % (
+              pass_ticket, int(time.time()))
     params = {
         'BaseRequest': BaseRequest,
         'MemberCount': len(MemberList),
@@ -340,7 +346,7 @@ def createChatroom(UserNames):
 
 def deleteMember(ChatRoomName, UserNames):
     url = base_uri + \
-        '/webwxupdatechatroom?fun=delmember&pass_ticket=%s' % (pass_ticket)
+          '/webwxupdatechatroom?fun=delmember&pass_ticket=%s' % (pass_ticket)
     params = {
         'BaseRequest': BaseRequest,
         'ChatRoomName': ChatRoomName,
@@ -362,7 +368,7 @@ def deleteMember(ChatRoomName, UserNames):
 
 def addMember(ChatRoomName, UserNames):
     url = base_uri + \
-        '/webwxupdatechatroom?fun=addmember&pass_ticket=%s' % (pass_ticket)
+          '/webwxupdatechatroom?fun=addmember&pass_ticket=%s' % (pass_ticket)
     params = {
         'BaseRequest': BaseRequest,
         'ChatRoomName': ChatRoomName,
@@ -459,14 +465,14 @@ def heartBeatLoop():
 
 
 def main():
-
     try:
         ssl._create_default_https_context = ssl._create_unverified_context
 
         opener = wdf_urllib.build_opener(
-            wdf_urllib.HTTPCookieProcessor(CookieJar()))
+                wdf_urllib.HTTPCookieProcessor(CookieJar()))
         opener.addheaders = [
-            ('User-agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36')]
+            ('User-agent',
+             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36')]
         wdf_urllib.install_opener(opener)
     except:
         pass
@@ -505,7 +511,7 @@ def main():
     d = {}
     for Member in MemberList:
         d[Member['UserName']] = (Member['NickName'].encode(
-            'utf-8'), Member['RemarkName'].encode('utf-8'))
+                'utf-8'), Member['RemarkName'].encode('utf-8'))
     print('开始查找...')
     group_num = int(math.ceil(MemberCount / float(MAX_GROUP_NUM)))
     for i in range(0, group_num):
@@ -519,7 +525,7 @@ def main():
         # 新建群组/添加成员
         if ChatRoomName == '':
             (ChatRoomName, DeletedList, BlockedList) = createChatroom(
-                UserNames)
+                    UserNames)
         else:
             (DeletedList, BlockedList) = addMember(ChatRoomName, UserNames)
 
@@ -572,7 +578,6 @@ def main():
 
 
 class UnicodeStreamFilter:
-
     def __init__(self, target):
         self.target = target
         self.encoding = 'utf-8'
@@ -585,11 +590,11 @@ class UnicodeStreamFilter:
         s = s.encode(self.encode_to, self.errors).decode(self.encode_to)
         self.target.write(s)
 
+
 if sys.stdout.encoding == 'cp936':
     sys.stdout = UnicodeStreamFilter(sys.stdout)
 
 if __name__ == '__main__':
-
     print('本程序的查询结果可能会引起一些心理上的不适,请小心使用...')
     main()
     print('回车键退出...')

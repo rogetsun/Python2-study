@@ -16,3 +16,6 @@ print a
 a = '\u123e\u743e\u932a'
 print a
 print a.decode('unicode-escape')
+
+o = {'name': u'离退休'}
+print o
