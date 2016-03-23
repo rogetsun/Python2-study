@@ -144,6 +144,7 @@ def showQRImage():
 
 
 def waitForLogin():
+    """生成二维码后等待用户扫描确认登录"""
     global tip, base_uri, redirect_uri, push_uri
 
     url = 'https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?tip=%s&uuid=%s&_=%s' % (
