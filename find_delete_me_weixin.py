@@ -90,7 +90,7 @@ def getUUID():
         'appid': 'wx782c26e4c19acffb',
         'fun': 'new',
         'lang': 'zh_CN',
-        '_': int(time.time()),
+        '_': int(time.time())
     }
 
     request = getRequest(url=url, data=urlencode(params))
@@ -102,13 +102,12 @@ def getUUID():
     # window.QRLogin.code = 200; window.QRLogin.uuid = "oZwt_bFfRg==";
     regx = r'window.QRLogin.code = (\d+); window.QRLogin.uuid = "(\S+?)"'
     pm = re.search(regx, data)
-
     code = pm.group(1)
     uuid = pm.group(2)
-
+    print("ret_code=%s" % (code,))
+    print("uuid=%s" % (uuid,))
     if code == '200':
         return True
-
     return False
 
 
@@ -170,8 +169,15 @@ def waitForLogin():
         regx = r'window.redirect_uri="(\S+?)";'
         pm = re.search(regx, data)
         redirect_uri = pm.group(1) + '&fun=new'
+        print(redirect_uri)
         base_uri = redirect_uri[:redirect_uri.rfind('/')]
-
+        a = 'window.code=200;window.redirect_uri="' \
+            'https://wx.qq.com/cgi-bin/mmwebwx-bin/' \
+            'webwxnewloginpage?' \
+            'ticket=AXPp01F2d4auHsWlsUTS8ROh@qrticket_0' \
+            '&uuid=YZsckc6GWA==' \
+            '&lang=zh_CN' \
+            '&scan=1463396785";'
         # push_uri与base_uri对应关系(排名分先后)(就是这么奇葩..)
         services = [
             ('wx2.qq.com', 'webpush2.weixin.qq.com'),
@@ -186,7 +192,7 @@ def waitForLogin():
             if base_uri.find(searchUrl) >= 0:
                 push_uri = 'https://%s/cgi-bin/mmwebwx-bin' % pushUrl
                 break
-
+        print(push_uri)
         # closeQRImage
         if sys.platform.find('darwin') >= 0:  # for OSX with Preview
             os.system("osascript -e 'quit app \"Preview\"'")
@@ -261,6 +267,7 @@ def webwxinit():
     dic = json.loads(data)
     ContactList = dic['ContactList']
     My = dic['User']
+    print(My)
     SyncKey = dic['SyncKey']
 
     state = responseState('webwxinit', dic['BaseResponse'])
@@ -468,9 +475,9 @@ def heartBeatLoop():
 def main():
     try:
         ssl._create_default_https_context = ssl._create_unverified_context
-
+        print(ssl._create_default_https_context.func_code)
         opener = wdf_urllib.build_opener(
-                wdf_urllib.HTTPCookieProcessor(CookieJar()))
+            wdf_urllib.HTTPCookieProcessor(CookieJar()))
         opener.addheaders = [
             ('User-agent',
              'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.125 Safari/537.36')]
@@ -512,7 +519,7 @@ def main():
     d = {}
     for Member in MemberList:
         d[Member['UserName']] = (Member['NickName'].encode(
-                'utf-8'), Member['RemarkName'].encode('utf-8'))
+            'utf-8'), Member['RemarkName'].encode('utf-8'))
     print('开始查找...')
     group_num = int(math.ceil(MemberCount / float(MAX_GROUP_NUM)))
     for i in range(0, group_num):
@@ -526,7 +533,7 @@ def main():
         # 新建群组/添加成员
         if ChatRoomName == '':
             (ChatRoomName, DeletedList, BlockedList) = createChatroom(
-                    UserNames)
+                UserNames)
         else:
             (DeletedList, BlockedList) = addMember(ChatRoomName, UserNames)
 
