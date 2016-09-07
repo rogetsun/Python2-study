@@ -19,3 +19,11 @@ print a.decode('unicode-escape')
 
 o = {'name': u'离退休'}
 print o
+
+print chr(4)
+s = ""
+for i in range(0, 100):
+    s = "%s|%s" % (s, chr(i),)
+
+print s
+print ord('!')
