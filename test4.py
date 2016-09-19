@@ -1,11 +1,10 @@
 __author__ = 'uv2sun'
 p = [('name', 'litxx'), ('id', 123)]
 d = dict(p)
-print d
+print (d)
 
-a = 1234L
+m = 47 * 1024 / 11
 
-print a
+print(m)
 
-
-
+print(m/6)

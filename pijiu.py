@@ -36,13 +36,14 @@ def while_drink(i):
     jp = 0
     pg = 0
     while drink():
-        # print '我喝'
+        print '我喝'
         pass
+    return i + 100
 
-
-for i in range(1, 100):
-
-    while_drink(i)
-    print '买%s,喝%s瓶,剩余:%s酒瓶,%s瓶盖' % (i, he, jp, pg)
-    if jp == 0 and pg == 0:
-        print i
+# for i in range(1, 100):
+#
+#     while_drink(i)
+# print '买%s,喝%s瓶,剩余:%s酒瓶,%s瓶盖' % (i, he, jp, pg)
+# if jp == 0 and pg == 0:
+# print i
+# pass
